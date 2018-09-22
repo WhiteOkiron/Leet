@@ -18,60 +18,88 @@
 #include <vector>
 using namespace std;
 
-
 int minimum = 0;
-class Solution {
 
-public:
-	string longestCommonPrefix(vector<string>& strs) {
-
-		int minSize = getMinSize(strs);
-		for (int i = 0; i < minSize; i++)
-		{
-
-		}
-	}
-
-};
-
-int getMinSize(vector<string>& strs)
+int getMinLetterCount(vector<string>& strs)
 {
-	minimum = strs[0].length();
-	for (int i = 0; i < strs.size(); i++)
+	if (strs.size() != 0)
 	{
-		if (strs[i].length() < minimum)
+		minimum = strs[0].length();
+		for (int i = 0; i < strs.size(); i++)
 		{
-			minimum = strs[i].length();
+			if (strs[i].length() < minimum)
+			{
+				minimum = strs[i].length();
+			}
 		}
 	}
 	return minimum;
 }
 
-int test()
-{
-	vector<string>word = { "onesdf", "two", "three", "four", "fives" };
 
-	//cout << word[0] << endl;       //! one
-	//cout << word[0][1] << endl;    //! n
-	//int size = static_cast<int>(word.size());
-	//cout << size << endl;
-	//cout << word.size() << endl;
-	int MinSize = getMinSize(word);
+class Solution {
+
+public:
+	string longestCommonPrefix(vector<string>& strs) {  //?  Empty Vector results in error when passed to a function
+		int stringSizeMinusOne = ((int)strs.size() - 1);
+		int minLetterCount = getMinLetterCount(strs);
+
+		string result = "";
+
+		int prefixCount = 0;
+		bool match = true;
+		string currentLetter = "";
+		string nextLetter = "";
+
+		int letterCount = 0; //! created when switching from a for loop to a while loop to accommodate match == true
+		while (letterCount < minLetterCount && match == true)
+		{
+			match = true;
+
+			for (int word = 0; word < strs.size(); word++)
+			{
+				//?  if number of word < strs.size()
+				if (word != strs.size()-1 && match)                     //! Account for overflowing vector
+				{
+
+					currentLetter = strs[word][letterCount];
+					nextLetter = strs[word + 1][letterCount];
+					//cout << currentLetter << " vs " << nextLetter << endl;
+
+
+					(currentLetter == nextLetter) ? match = true : match = false;
+					//cout << match << endl;
+				}
+			}
+			if (match == true) { prefixCount++; }
+			//cout << "prefixCount++: " << prefixCount << endl;
+			letterCount++;
+		}
+
+
+		if (stringSizeMinusOne != -1)
+		{
+			for (int i = 0; i < prefixCount; i++)  //!  Recreate the cut out string
+			{
+				result.push_back(strs[0][i]);
+			}
+		}
+		return result;
+	}
+};
 
 
 
-
-
-
-	return 0;
-}
 
 int main()
 {
 	//! Find the length of the shortest word
 	//! Loop through each letters in all the words using that length
-
-	test();
+	vector<string>words = { "twodf", "two", "twoee", "twour", "twoves" };
+	vector<string>empty = {  };
+	Solution solution;
+	cout << solution.longestCommonPrefix(words) << endl;
+	system("PAUSE");
 	return 0;
 
 }
