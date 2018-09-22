@@ -12,7 +12,7 @@
 //TODO: 	Output : false
 //TODO: 	Explanation : Reads 01 from right to left.Therefore it is not a palindrome.
 
-
+    
 #include <iostream>
 #include <string>
 #include <vector>
